@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { environment } from 'src/environments/environment.prod';
 import { UserLogin } from '../models/UserLogin';
 import { Usuario } from '../models/Usuario';
 
@@ -27,6 +28,16 @@ export class AuthService {
 
     // URL Heroku
     return this.http.post<Usuario>('https://blog-josias.herokuapp.com/usuario/cadastrar', usuario);
+  }
+
+  logado() {
+    let ok: boolean = false;
+
+    if (environment.token != '') {
+      ok = true;
+    }
+
+    return ok;
   }
 
 }
