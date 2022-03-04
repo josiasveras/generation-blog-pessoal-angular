@@ -23,15 +23,24 @@ export class TemaComponent implements OnInit {
       // alert("Sua seção expirou, faça login novamente.");
       this.router.navigate(["/entrar"]);
     }
+
+    this.findAllTemas();
   }
+
+ findAllTemas(){
+   this.temaService.getAllTemas().subscribe((resp: Tema[]) => {
+    this.listaTemas = resp;
+   })
+ } 
 
   cadastrarTema(){
     // console.log(environment.token);
-    this.temaService.postTema(this.tema).subscribe((resp: Tema)=>{
+    this.temaService.postTema(this.tema).subscribe((resp: Tema) => {
       this.tema = resp;
       alert("Tema cadastrado com sucesso!");
+      this.findAllTemas();
       this.tema = new Tema();
-    });
+    })
   }
 
 }

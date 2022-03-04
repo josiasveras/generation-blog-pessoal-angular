@@ -18,7 +18,7 @@ export class TemaService {
     headers: new HttpHeaders().set('Authorization', environment.token)
   }
 
-  getAllTema(): Observable<Tema[]>{
+  getAllTemas(): Observable<Tema[]>{
     // URL local
     // return this.http.get<Tema[]>('http://localhost:8080/tema/buscar/tudo', this.token);
 
