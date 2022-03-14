@@ -96,6 +96,8 @@
                 {{postagens.dataPostagem | date: "dd/MM/yyyy"}} as {{postagens.dataPostagem | date: "HH:mm"}}
               </small>
             </p>
+            <a class="text-info mr-3" href="" [routerLink]="['/postagem-edit', postagens.idPostagem]">Editar</a>
+            <a class="text-danger" href="" [routerLink]="['/postagem-delete', postagens.idPostagem]">Apagar</a>
           </div>
         </div>
       </div>
@@ -165,7 +167,7 @@
 
         <div class="form-group">
           <label for="tema">Escolha um tema ou <a data-dismiss="modal" routerLink="/tema">cadastre um novo</a>: </label>
-          <select class="form-control" name="tema" id="tema" [(ngModel)]="id" (change)="findByIdTema">
+          <select class="form-control" name="tema" id="tema" [(ngModel)]="id" (change)="findByIdTema()">
             <option *ngFor="let tema of listaTemas" value="{{tema.idTema}}">
               {{tema.descricaoTema}}
             </option>
