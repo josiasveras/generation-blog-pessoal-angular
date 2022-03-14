@@ -4,6 +4,7 @@ import { environment } from 'src/environments/environment.prod';
 import { Postagem } from '../models/Postagem';
 import { Tema } from '../models/Tema';
 import { Usuario } from '../models/Usuario';
+import { AuthService } from '../services/auth.service';
 import { PostagemService } from '../services/postagem.service';
 import { TemaService } from '../services/tema.service';
 
@@ -20,12 +21,14 @@ export class InicioComponent implements OnInit {
 
   id: number;
   listaTemas: Tema[];
+  listaPostagens: Postagem[];
   idUsuario = environment.id;
 
   constructor(
-    private router: Router, 
+    private router: Router,
     private postagemService: PostagemService,
-    private temaService: TemaService
+    private temaService: TemaService,
+    private authService: AuthService
   ) { }
 
   ngOnInit() {
@@ -35,32 +38,47 @@ export class InicioComponent implements OnInit {
       this.router.navigate(["/entrar"]);
     }
 
+    this.authService.refreshToken();
     this.getAllTema();
+    this.getAllPostagem();
   }
 
-  getAllTema(){
+  getAllTema() {
     this.temaService.getAllTemas().subscribe((resp: Tema[]) => {
       this.listaTemas = resp;
     })
   }
 
-  findByIdTema(){
-    this.temaService.getByIdTema(this.id).subscribe((resp: Tema) =>{
+  findByIdTema() {
+    this.temaService.getByIdTema(this.id).subscribe((resp: Tema) => {
       this.tema = resp;
     })
   }
 
-  publicarPostagem(){
+  getAllPostagem() {
+    this.postagemService.getAllPostagens().subscribe((resp: Postagem[]) => {
+      this.listaPostagens = resp;
+    })
+  }
+
+  findByIdUsuario(){
+    this.authService.getByIdUsuario(this.idUsuario).subscribe((resp: Usuario) => {
+      this.usuario = resp;
+    })
+  }
+
+  publicarPostagem() {
     this.tema.idTema = this.id;
     this.postagem.tema = this.tema;
 
     this.usuario.id = this.idUsuario;
     this.postagem.usuario = this.usuario;
 
-    this.postagemService.postPostagem(this.postagem).subscribe((resp: Postagem) =>{
+    this.postagemService.postPostagem(this.postagem).subscribe((resp: Postagem) => {
       this.postagem = resp;
       alert("Postagem realizada com sucesso!");
       this.postagem = new Postagem();
+      this.getAllPostagem();
     })
   }
 
